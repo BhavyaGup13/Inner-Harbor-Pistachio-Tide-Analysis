@@ -1,6 +1,16 @@
 # Pistachio Tide Modeling
 
-This project predicts sulfur-oxidizing bacterial surface events (“pistachio tides”) in Baltimore’s Inner Harbor using multi-year weather and water chemistry time-series data.
+This project develops a reproducible workflow to detect and model pistachio tide events—periods of low dissolved oxygen combined with abnormal turbidity and chlorophyll patterns—using:
+
+High‑frequency water quality sensor data
+
+Daily weather observations
+
+Feature engineering at both interval and daily scales
+
+Random Forest classification with time‑series cross‑validation
+
+The goal is to understand environmental drivers of pistachio tide events and evaluate whether short‑term prediction is feasible.
 
 ## Repository Structure
 - notebooks/ — clean Jupyter notebook
@@ -39,9 +49,43 @@ This project predicts sulfur-oxidizing bacterial surface events (“pistachio ti
 The raw weather and water quality data used in this project are not included in this repository due to size limits and data-sharing restrictions. The `data` folder is intentionally left empty in the public GitHub version. All raw files are stored locally for analysis and can be provided upon request by the PI.
 
 
-## How to Run
-1. Place raw data files into the `data/` folder.
-2. Install dependencies using:
-   pip install -r requirements.txt
-3. Run the pipeline:
-   python src/model_pipeline.py
+##Visual Workflow
+Raw Weather Data  ───┐
+                     │
+                     ▼
+             Clean & Standardize
+                     │
+                     ▼
+            Daily Weather Dataset
+                     │
+                     │
+Raw Water Data ──────┘
+                     ▼
+             Clean & Standardize
+                     │
+                     ▼
+     Interval-Level Pistachio Event Flag
+                     │
+                     ▼
+     ┌───────────────────────────────────────┐
+     │  Path A: Simple Daily Model           │
+     │  - Collapse to daily event flag       │
+     │  - Merge with weather                 │
+     └───────────────────────────────────────┘
+                     │
+                     ▼
+     ┌───────────────────────────────────────┐
+     │  Path B: Advanced Lagged Model        │
+     │  - Daily feature engineering          │
+     │  - 1-day lag features                 │
+     │  - Merge with weather                 │
+     └───────────────────────────────────────┘
+                     │
+                     ▼
+              Modeling Pipeline
+       - Imputation
+       - TimeSeriesSplit
+       - Random Forest
+       - Evaluation
+       - Feature Importance
+
