@@ -13,11 +13,10 @@ Random Forest classification with time‑series cross‑validation
 The goal is to understand environmental drivers of pistachio tide events and evaluate whether short‑term prediction is feasible.
 
 ## Repository Structure
-- notebooks/ — clean Jupyter notebook
-- src/ — Python pipeline
-- figures/ — plots
-- data/ — empty (raw data not included)
-- ## Data Sources
+-Inner-Harbor.py
+- README.md
+- Weather data
+## Data Sources
 
 ### Weather Data
 - Source 1: Weather Underground (Wunderground) — Baltimore/Washington International Airport (KBWI).
@@ -50,42 +49,48 @@ The raw weather and water quality data used in this project are not included in 
 
 
 ## Visual Workflow
-\\\Raw Weather Data  ───┐
-                     │
-                     ▼
-             Clean & Standardize
-                     │
-                     ▼
-            Daily Weather Dataset
-                     │
-                     │
-Raw Water Data ──────┘
-                     ▼
-             Clean & Standardize
-                     │
-                     ▼
-     Interval-Level Pistachio Event Flag
-                     │
-                     ▼
-     ┌───────────────────────────────────────┐
-     │  Path A: Simple Daily Model           │
-     │  - Collapse to daily event flag       │
-     │  - Merge with weather                 │
-     └───────────────────────────────────────┘
-                     │
-                     ▼
-     ┌───────────────────────────────────────┐
-     │  Path B: Advanced Lagged Model        │
-     │  - Daily feature engineering          │
-     │  - 1-day lag features                 │
-     │  - Merge with weather                 │
-     └───────────────────────────────────────┘
-                     │
-                     ▼
-              Modeling Pipeline
-       - Imputation
-       - TimeSeriesSplit
-       - Random Forest
-       - Evaluation
-       - Feature Importance \\\
+1. Raw Weather Data  
+→ Clean and standardize
+→ Convert to daily dataset
 
+2. Raw Water Quality Data  
+→ Clean and standardize
+→ Create interval‑level pistachio event flag (based on DO, turbidity, chlorophyll)
+
+3. Daily Event Labeling  
+→ Collapse interval events into a single daily label (1 = any event that day)
+
+4. Path A: Simple Daily Model  
+→ Use daily event label
+→ Merge with daily weather data
+→ Produce a simple daily modeling dataset
+
+5. Path B: Advanced Lagged Model  
+→ Compute daily summary features (min/mean/max DO, Chl, Turb, etc.)
+→ Compute event metrics (fraction of time in event, number of clusters, longest run)
+→ Create 1‑day lag features
+→ Merge lagged water features with daily weather data
+→ Produce the advanced modeling dataset
+
+6. Modeling Pipeline
+→ Impute missing values
+→ TimeSeriesSplit for time‑aware train/test separation
+→ Train Random Forest classifier
+→ Evaluate using classification report and confusion matrix
+→ Analyze permutation feature importance
+
+## Future Improvements
+- Develop graded (multi‑level) event labels  
+Instead of a strict binary 0/1 label, create severity levels (e.g., mild, moderate, severe) based on DO, turbidity, and chlorophyll thresholds. This increases the number of positive samples and captures early warning signals that a binary label misses.
+
+- Use cluster‑based labeling to discover natural event patterns  
+Apply unsupervised methods (PCA + KMeans or hierarchical clustering) to interval‑level water quality data to identify groups of “event‑like” days without relying on hard thresholds. These clusters can then be used as alternative labels for modeling.
+
+- Incorporate rolling‑window features  
+Compute rolling minimums, maximums, means, and trends over 2‑hour, 6‑hour, 12‑hour, and 24‑hour windows. Rolling features capture the buildup and decay of environmental stress leading to pistachio tide events.
+
+- Add trend‑based (derivative) features  
+Include first‑ and second‑order derivatives of DO, turbidity, and chlorophyll to quantify the rate of change and acceleration. These trend features often act as early warning indicators for low‑oxygen events.
+
+- Address extreme class imbalance
+Explore oversampling (SMOTE, ADASYN), undersampling, or class‑balanced loss functions to improve recall on rare event days. Models like XGBoost or LightGBM also offer imbalance‑aware parameters.
