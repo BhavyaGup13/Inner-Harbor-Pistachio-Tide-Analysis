@@ -30,10 +30,10 @@ from sklearn.inspection import permutation_importance
 # 2) Load data 
 # ----------------------------
 weather_df = pd.read_excel(
-    r"C:/Users/Bhabh/OneDrive/Desktop/Masters/Research/Weather_data_May2016-Nov2025.xlsx"
+    r"Weather_data_May2016-Nov2025.xlsx"
 )
 water_df = pd.read_csv(
-    r"C:/Users/Bhabh/OneDrive/Desktop/Masters/Research/Water Data/EOTBData_Patapsco_AES_01Jan01_TO_10Nov25_Tides.csv"
+    r"EOTBData_Patapsco_AES_01Jan01_TO_10Nov25_Tides.csv"
 )
 
 # ----------------------------
