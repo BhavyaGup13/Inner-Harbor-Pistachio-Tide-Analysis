@@ -49,7 +49,7 @@ The goal is to understand environmental drivers of pistachio tide events and eva
 The raw weather and water quality data used in this project are not included in this repository due to size limits and data-sharing restrictions. The `data` folder is intentionally left empty in the public GitHub version. All raw files are stored locally for analysis and can be provided upon request by the PI.
 
 
-##Visual Workflow
+## Visual Workflow
 Raw Weather Data  ───┐
                      │
                      ▼
