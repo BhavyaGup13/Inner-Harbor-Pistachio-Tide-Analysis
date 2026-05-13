@@ -43,14 +43,14 @@ The goal is to understand environmental drivers of pistachio tide events and eva
 - Variables: Dissolved oxygen (DO), turbidity, chlorophyll, pH, salinity, temperature.
 - Sampling Frequency: 15-minute intervals.
 - Notes: The Eyes on the Bay website has since changed, but the data was originally downloaded from their public monitoring portal.
-- Access: Raw files stored locally in the `data` folder (not included in this repository).
+
 
 ## Data Availability
 The raw weather and water quality data used in this project are not included in this repository due to size limits and data-sharing restrictions. The `data` folder is intentionally left empty in the public GitHub version. All raw files are stored locally for analysis and can be provided upon request by the PI.
 
 
 ## Visual Workflow
-Raw Weather Data  ───┐
+\\\Raw Weather Data  ───┐
                      │
                      ▼
              Clean & Standardize
@@ -87,5 +87,5 @@ Raw Water Data ──────┘
        - TimeSeriesSplit
        - Random Forest
        - Evaluation
-       - Feature Importance
+       - Feature Importance \\\
 
